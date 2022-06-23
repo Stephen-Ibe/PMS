@@ -1,11 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import ClientRow from './ClientRow';
-import { GET_CLIENTS } from '../queries/clients.queries';
+import { GET_CLIENTS } from '../../grapghQl/queries/clients.queries';
+import Spinner from '../elements/Spinner';
 
 const Clients = () => {
   const { loading, error, data } = useQuery(GET_CLIENTS);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Something went wrong</p>;
 
   return (
