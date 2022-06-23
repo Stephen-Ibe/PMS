@@ -1,11 +1,33 @@
 import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
+import { ADD_CLIENT } from '../../grapghQl/mutations/client.mutation';
+import { useMutation } from '@apollo/client';
+import { GET_CLIENTS } from '../../grapghQl/queries/clients.queries';
+import Spinner from '../elements/Spinner';
+
+const initialState = {
+  name: '',
+  email: '',
+  phone: '',
+};
 
 const AddClient = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
+  const [formData, setFormData] = useState(initialState);
+  const [loading, setloading] = useState(false);
+
+  const [addClient] = useMutation(ADD_CLIENT, {
+    variables: {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+    },
+    update(cache, { data: { addClient } }) {
+      const { clients } = cache.readQuery({ query: GET_CLIENTS });
+      cache.writeQuery({
+        query: GET_CLIENTS,
+        data: { clients: [...clients, addClient] },
+      });
+    },
   });
 
   const handleInputChange = (e) => {
@@ -16,8 +38,17 @@ const AddClient = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true);
+    const { name, email, phone } = formData;
+    if (name === '' || email === '' || phone === '') {
+      setloading(false)
+      return alert('Fill in all fields');
+    }
+    await addClient(name, email, phone);
+    setFormData(initialState);
+    setloading(false);
   };
 
   return (
@@ -64,6 +95,7 @@ const AddClient = () => {
                     id='name'
                     value={formData.name}
                     onChange={(e) => handleInputChange(e)}
+                    name='name'
                   />
                 </div>
                 <div className='mb-3'>
@@ -74,6 +106,7 @@ const AddClient = () => {
                     id='email'
                     value={formData.email}
                     onChange={(e) => handleInputChange(e)}
+                    name='email'
                   />
                 </div>
                 <div className='mb-3'>
@@ -84,6 +117,7 @@ const AddClient = () => {
                     id='phone'
                     value={formData.phone}
                     onChange={(e) => handleInputChange(e)}
+                    name='phone'
                   />
                 </div>
                 <button
@@ -91,7 +125,8 @@ const AddClient = () => {
                   className='btn btn-secondary'
                   data-bs-dismiss='modal'
                 >
-                  Submit
+                  {loading ? <Spinner /> : 'Submit'}
+
                 </button>
               </form>
             </div>
