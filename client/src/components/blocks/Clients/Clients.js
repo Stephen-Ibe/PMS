@@ -1,11 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import ClientRow from './ClientRow';
-import { GET_CLIENTS } from '../../graphQl/queries/clients.queries';
-import Spinner from '../elements/Spinner';
+import Spinner from '../../elements/Spinner';
+import { GET_CLIENTS } from '../../../graphQl/queries/clients.queries';
 
 const Clients = () => {
   const { loading, error, data } = useQuery(GET_CLIENTS);
+
   if (loading) return <Spinner />;
   if (error) return <p>Something went wrong</p>;
 

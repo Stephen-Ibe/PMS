@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
-import { ADD_CLIENT } from '../../graphQl/mutations/client.mutation';
 import { useMutation } from '@apollo/client';
-import { GET_CLIENTS } from '../../graphQl/queries/clients.queries';
-import Spinner from '../elements/Spinner';
+import Spinner from '../../elements/Spinner';
+import { ADD_CLIENT } from '../../../graphQl/mutations/client.mutation';
+import { GET_CLIENTS } from '../../../graphQl/queries/clients.queries';
 
 const initialState = {
   name: '',
@@ -43,7 +43,7 @@ const AddClient = () => {
     setloading(true);
     const { name, email, phone } = formData;
     if (name === '' || email === '' || phone === '') {
-      setloading(false)
+      setloading(false);
       return alert('Fill in all fields');
     }
     await addClient(name, email, phone);
@@ -126,7 +126,6 @@ const AddClient = () => {
                   data-bs-dismiss='modal'
                 >
                   {loading ? <Spinner /> : 'Submit'}
-
                 </button>
               </form>
             </div>

@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { DELETE_CLIENT } from '../../graphQl/mutations/client.mutation';
-import { GET_CLIENTS } from '../../graphQl/queries/clients.queries';
+import { DELETE_CLIENT } from '../../../graphQl/mutations/client.mutation';
+import { GET_CLIENTS } from '../../../graphQl/queries/clients.queries';
 
 const ClientRow = ({ client }) => {
   const [deleteClient] = useMutation(DELETE_CLIENT, {
@@ -14,7 +14,9 @@ const ClientRow = ({ client }) => {
       });
       cache.writeQuery({
         query: GET_CLIENTS,
-        data: {clients: clients.filter(client => client.id !== deleteClient.id)}
+        data: {
+          clients: clients.filter((client) => client.id !== deleteClient.id),
+        },
       });
     },
   });
