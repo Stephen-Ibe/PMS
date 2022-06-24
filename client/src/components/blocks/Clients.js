@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import ClientRow from './ClientRow';
-import { GET_CLIENTS } from '../../grapghQl/queries/clients.queries';
+import { GET_CLIENTS } from '../../graphQl/queries/clients.queries';
 import Spinner from '../elements/Spinner';
 
 const Clients = () => {

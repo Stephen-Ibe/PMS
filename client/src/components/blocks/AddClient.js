@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
-import { ADD_CLIENT } from '../../grapghQl/mutations/client.mutation';
+import { ADD_CLIENT } from '../../graphQl/mutations/client.mutation';
 import { useMutation } from '@apollo/client';
-import { GET_CLIENTS } from '../../grapghQl/queries/clients.queries';
+import { GET_CLIENTS } from '../../graphQl/queries/clients.queries';
 import Spinner from '../elements/Spinner';
 
 const initialState = {
