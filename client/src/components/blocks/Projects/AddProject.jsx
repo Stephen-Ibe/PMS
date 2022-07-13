@@ -16,21 +16,6 @@ const AddProject = () => {
 
   const { loading, error, data } = useQuery(GET_CLIENTS);
 
-  // const [addClient] = useMutation(ADD_CLIENT, {
-  //   variables: {
-  //     name: formData.name,
-  //     email: formData.email,
-  //     phone: formData.phone,
-  //   },
-  //   update(cache, { data: { addClient } }) {
-  //     const { clients } = cache.readQuery({ query: GET_CLIENTS });
-  //     cache.writeQuery({
-  //       query: GET_CLIENTS,
-  //       data: { clients: [...clients, addClient] },
-  //     });
-  //   },
-  // });
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -112,7 +97,9 @@ const AddProject = () => {
                       ></textarea>
                     </div>
                     <div className='mb-3'>
-                      <label htmlFor='status'>Status</label>
+                      <label htmlFor='status' className='form-label'>
+                        Status
+                      </label>
                       <select
                         id='status'
                         className='form-select'
@@ -124,9 +111,26 @@ const AddProject = () => {
                         <option value='completed'>Completed</option>
                       </select>
                     </div>
+                    <div className='mb-3'>
+                      <label htmlFor='clientId' className='form-label'>
+                        Client
+                      </label>
+                      <select
+                        name='clientId'
+                        id='clientId'
+                        className='form-select'
+                        value={formData.clientId}
+                        onChange={(e) => handleInputChange(e)}
+                      >
+                        <option value=''>Select Client</option>
+                        {data.clients.map((client) => (
+                          <option key={client.id} value={client.id}>{client.name}</option>
+                        ))}
+                      </select>
+                    </div>
                     <button
                       type='submit'
-                      className='btn btn-primary'
+                      className='btn btn-primary mt-4'
                       data-bs-dismiss='modal'
                     >
                       {loading ? <Spinner /> : 'Submit'}
