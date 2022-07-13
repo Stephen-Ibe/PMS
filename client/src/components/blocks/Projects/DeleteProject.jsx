@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { DELETE_PROJECT } from '../../../graphQl/mutations/project.mutations';
 import { GET_PROJECTS } from '../../../graphQl/queries/project.queries';
 
-const DeleteProjectButton = ({ projectId }) => {
+const DeleteProject = ({ projectId }) => {
   const navigate = useNavigate();
   const [deleteProject] = useMutation(DELETE_PROJECT, {
     variables: { id: projectId },
@@ -22,4 +22,4 @@ const DeleteProjectButton = ({ projectId }) => {
   );
 };
 
-export default DeleteProjectButton;
+export default DeleteProject;

@@ -1,4 +1,7 @@
+import { useMutation } from '@apollo/client';
 import React, { useState } from 'react';
+import { UPDATE_PROJECT } from '../../../graphQl/mutations/project.mutations';
+import { GET_PROJECT } from '../../../graphQl/queries/project.queries';
 
 const initialState = {
   name: '',
@@ -13,6 +16,16 @@ const EditProject = ({ project }) => {
     status: '',
   });
 
+  const [updateProject] = useMutation(UPDATE_PROJECT, {
+    variables: {
+      id: project.id,
+      name: formData.name,
+      description: formData.description,
+      status: formData.status,
+    },
+    refetchQueries: [{ query: GET_PROJECT, variables: { id: project.id } }],
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -21,12 +34,14 @@ const EditProject = ({ project }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, description, status } = formData;
     if (name === '' || description === '' || status === '') {
       return alert('Fill in all fields');
     }
+    await updateProject(name, description, status);
+    alert('Project Updated Successfully');
   };
 
   return (

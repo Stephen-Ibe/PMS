@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { GET_PROJECT } from '../graphQl/queries/project.queries';
 import Spinner from '../components/elements/Spinner';
 import ClientInfo from '../components/blocks/Clients/ClientInfo';
-import DeleteProjectButton from '../components/blocks/Projects/DeleteProjectButton';
+import DeleteProject from '../components/blocks/Projects/DeleteProject';
 import EditProject from '../components/blocks/Projects/EditProject';
 
 const Project = () => {
@@ -26,7 +26,7 @@ const Project = () => {
           <p className='lead'>{data.project.status}</p>
           <ClientInfo client={data.project.client} />
           <EditProject project={data.project} />
-          <DeleteProjectButton projectId={data.project.id} />
+          <DeleteProject projectId={data.project.id} />
         </div>
       )}
     </>
