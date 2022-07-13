@@ -3,6 +3,8 @@ import { FaList } from 'react-icons/fa';
 import { useMutation, useQuery } from '@apollo/client';
 import Spinner from '../../elements/Spinner';
 import { GET_CLIENTS } from '../../../graphQl/queries/clients.queries';
+import { ADD_PROJECT } from '../../../graphQl/mutations/project.mutations';
+import { GET_PROJECTS } from '../../../graphQl/queries/project.queries';
 
 const initialState = {
   name: '',
@@ -15,6 +17,21 @@ const AddProject = () => {
   const [formData, setFormData] = useState(initialState);
 
   const { loading, error, data } = useQuery(GET_CLIENTS);
+  const [addProject] = useMutation(ADD_PROJECT, {
+    variables: {
+      name: formData.name,
+      description: formData.description,
+      status: formData.status,
+      clientId: formData.clientId,
+    },
+    update(cache, { data: { addProject } }) {
+      const { projects } = cache.readQuery({ query: GET_PROJECTS });
+      cache.writeQuery({
+        query: GET_PROJECTS,
+        data: { projects: [...projects, addProject] },
+      });
+    },
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,10 +43,12 @@ const AddProject = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, description, status } = formData;
+    const { name, description, status, clientId } = formData;
     if (name === '' || description === '' || status === '') {
       return alert('Fill in all fields');
     }
+
+    await addProject(name, description, status, clientId);
 
     setFormData(initialState);
   };
@@ -93,7 +112,7 @@ const AddProject = () => {
                         id='description'
                         value={formData.description}
                         onChange={(e) => handleInputChange(e)}
-                        name='email'
+                        name='description'
                       ></textarea>
                     </div>
                     <div className='mb-3'>
@@ -102,6 +121,7 @@ const AddProject = () => {
                       </label>
                       <select
                         id='status'
+                        name='status'
                         className='form-select'
                         value={formData.status}
                         onChange={(e) => handleInputChange(e)}
@@ -124,7 +144,9 @@ const AddProject = () => {
                       >
                         <option value=''>Select Client</option>
                         {data.clients.map((client) => (
-                          <option key={client.id} value={client.id}>{client.name}</option>
+                          <option key={client.id} value={client.id}>
+                            {client.name}
+                          </option>
                         ))}
                       </select>
                     </div>
