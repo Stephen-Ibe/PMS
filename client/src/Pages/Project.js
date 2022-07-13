@@ -4,6 +4,7 @@ import { GET_PROJECT } from '../graphQl/queries/project.queries';
 import Spinner from '../components/elements/Spinner';
 import ClientInfo from '../components/blocks/Clients/ClientInfo';
 import DeleteProjectButton from '../components/blocks/Projects/DeleteProjectButton';
+import EditProject from '../components/blocks/Projects/EditProject';
 
 const Project = () => {
   const { id } = useParams();
@@ -24,7 +25,7 @@ const Project = () => {
           <h5 className='mt-3'>Project Status</h5>
           <p className='lead'>{data.project.status}</p>
           <ClientInfo client={data.project.client} />
-
+          <EditProject project={data.project} />
           <DeleteProjectButton projectId={data.project.id} />
         </div>
       )}
