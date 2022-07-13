@@ -3,12 +3,6 @@ import React, { useState } from 'react';
 import { UPDATE_PROJECT } from '../../../graphQl/mutations/project.mutations';
 import { GET_PROJECT } from '../../../graphQl/queries/project.queries';
 
-const initialState = {
-  name: '',
-  description: '',
-  status: '',
-};
-
 const EditProject = ({ project }) => {
   const [formData, setFormData] = useState({
     name: project.name,
